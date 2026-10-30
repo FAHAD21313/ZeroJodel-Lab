@@ -1,0 +1,13 @@
+*.ipa
+*.app/
+*.xcarchive/
+*.mobileprovision
+*.p12
+*.pem
+*.key
+ZeroV26Min.dylib
+*.zip
+*.ips
+*.crash
+*.dSYM/
+.DS_Store
