@@ -1,0 +1,33 @@
+name: Build iOS passive loader probe
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-ios-probe.yml'
+      - 'zero_v28_probe.c'
+      - 'build_dylib_macos.sh'
+jobs:
+  build:
+    name: Build and inspect iOS ARM64 dylib
+    runs-on: macos-15
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Report Apple toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+      - name: Build, ad-hoc sign, and inspect binary
+        run: bash build_dylib_macos.sh
+      - name: Upload inert library and manifest only
+        uses: actions/upload-artifact@v4
+        with:
+          name: v28-passive-ios-arm64-dylib
+          path: |
+            ZeroV26Min.dylib
+            probe_manifest.txt
+          retention-days: 3
+          if-no-files-found: error
